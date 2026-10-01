@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ジャグ記録">
+<title>ジャグ記録</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f5f5f7;--card:#fff;--tx:#1c1c1e;--sub:#8e8e93;--ac:#7c3aed;--pl:#0a7f3f;--mi:#d92d20;--ln:#e5e5ea}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111;--card:#1c1c1e;--tx:#f2f2f7;--sub:#98989f;--ac:#a78bfa;--pl:#4ade80;--mi:#f87171;--ln:#2c2c2e}}
+:root[data-theme="dark"]{--bg:#111;--card:#1c1c1e;--tx:#f2f2f7;--sub:#98989f;--ac:#a78bfa;--pl:#4ade80;--mi:#f87171;--ln:#2c2c2e}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0 auto;background:var(--bg);color:var(--tx);font-family:-apple-system,"Hiragino Sans",sans-serif;max-width:480px;padding:12px 12px 84px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tabs button{flex:1;padding:12px;border:0;border-radius:12px;background:var(--card);color:var(--sub);font-size:16px;font-weight:600}
+.tabs button.on{background:var(--ac);color:#fff}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px}
+.big{font-size:52px;font-weight:700;text-align:center;line-height:1.1}
+.sub{color:var(--sub);font-size:13px;text-align:center}
+.row{display:flex;gap:8px;margin-top:10px}
+.row button{flex:1;padding:14px 0;border:0;border-radius:12px;background:var(--bg);color:var(--tx);font-size:17px;font-weight:600}
+.grape{width:100%;padding:34px 0;margin-top:12px;border:0;border-radius:18px;background:var(--ac);color:#fff;font-size:28px;font-weight:700}
+.grape:active,.row button:active{opacity:.6}
+.pl{color:var(--pl)}.mi{color:var(--mi)}
+.nav{display:flex;justify-content:space-between;align-items:center;font-size:18px;font-weight:700}
+.nav button{border:0;background:none;color:var(--ac);font-size:24px;padding:4px 14px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:10px}
+.grid .h{text-align:center;font-size:12px;color:var(--sub)}
+.d{min-height:54px;border-radius:8px;background:var(--bg);padding:3px;font-size:12px;text-align:center}
+.d b{display:block;font-weight:500;color:var(--sub)}
+.d span{font-size:11px;font-weight:700}
+.d.today{outline:2px solid var(--ac)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center}
+.ov.on{display:flex}
+.sheet{background:var(--card);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.sheet label{display:block;font-size:13px;color:var(--sub);margin-top:10px}
+.sheet input{width:100%;padding:12px;font-size:18px;border:1px solid var(--ln);border-radius:10px;background:var(--bg);color:var(--tx)}
+.sheet .row button.pri{background:var(--ac);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 4px}
+.st{text-align:center}.st .l{font-size:11px;color:var(--sub);white-space:nowrap}.st .v{font-size:20px;font-weight:700}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.tile{position:relative;background:var(--bg);border-radius:14px;padding:14px 8px;text-align:center;font-weight:600;font-size:15px;user-select:none}
+.tile:active{opacity:.6}
+.tile .n{font-size:32px;font-weight:700}
+.tile .m{position:absolute;top:2px;right:2px;border:0;background:none;color:var(--sub);font-size:22px;padding:4px 10px}
+.sr{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:14px}
+.sr .k{width:44px}.sr .bar{flex:1;height:14px;background:var(--bg);border-radius:7px;overflow:hidden}
+.sr .bar i{display:block;height:100%;background:var(--ac)}
+.sr .p{width:50px;text-align:right;font-weight:700}.sr .r{width:52px;color:var(--sub);font-size:12px;text-align:right}
+.mb{position:fixed;left:0;right:0;bottom:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--ln);display:flex;gap:8px;align-items:center;justify-content:center}
+.mb span{color:var(--sub);font-size:13px}
+.mb select{flex:1;max-width:400px;padding:10px;font-size:16px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx)}
+.grow{display:flex;gap:8px;margin-top:12px}
+.grow .grape{width:auto;flex:1;margin-top:0;padding:18px 0;font-size:22px;border-radius:14px}
+.gb{display:flex;align-items:stretch}
+.gc{flex:1;text-align:center;min-width:0}
+.gc .big{font-size:48px}
+.gsep{width:2px;background:var(--ln);margin:0 8px;border-radius:1px}
+.gv{display:flex;justify-content:center;align-items:baseline;gap:4px}
+.gv .rt{font-size:16px;color:var(--sub);font-weight:600;white-space:nowrap}
+.ni{width:100%;border:0;border-radius:0;background:transparent;color:var(--tx);font-family:inherit;font-size:32px;font-weight:700;text-align:center;padding:2px 0;line-height:1.2}
+.ni:focus{outline:none;background:var(--bg);border-radius:8px}
+.gc .sub{height:22px;line-height:22px}
+.gc .rt{font-size:14px;color:var(--sub);font-weight:600;margin-top:2px}
+.snap{background:var(--bg);border-radius:10px;padding:10px;margin-top:12px;font-size:13px;line-height:1.6}
+.snap .ln{white-space:nowrap}
+.snl{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:var(--sub)}
+.sheet .snl input{width:22px;height:22px;padding:0;flex:none}
+.dr{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--ln)}
+.dd{width:40px;text-align:center;font-size:18px;font-weight:700}
+.dd small{display:block;font-size:11px;color:var(--sub);font-weight:500}
+.dm{flex:1;min-width:0}
+.dn{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ds{font-size:11px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dv{font-size:17px;font-weight:700;white-space:nowrap}
+.d.sat{background:#dae9ea}
+.d.sun{background:#e7cdce}
+.d.sat,.d.sun{--sub:#5b6b6c;--pl:#0a7f3f;--mi:#d92d20;color:#1c1c1e}
+</style></head><body>
+<div class="tabs"><button id="t1" class="on">ブドウ</button><button id="t2">収支</button></div>
+
+<div id="p1">
+  <div class="card"><div class="stats" id="stats"></div></div>
+  <div class="card">
+    <div class="gb">
+      <div class="gc"><div class="sub">総ゲーム数</div><input class="ni" id="g" type="text" inputmode="numeric" pattern="[0-9]*" value="0"></div>
+      <div class="gsep"></div>
+      <div class="gc"><div class="sub" style="font-size:16px">🍇</div><input class="ni" id="gv" type="text" inputmode="numeric" pattern="[0-9]*" value="0"><div class="rt" id="gr">（0.00）</div></div>
+    </div>
+    <div class="row"><button data-g="-1">-1</button><button data-g="1">+1</button><button data-g="10">+10</button><button data-g="100">+100</button></div>
+    <div class="grow"><button class="grape" id="bp">🍇 +1</button><button class="grape" id="bp5">🍇 +5</button></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="row"><button id="bm">🍇 -1</button><button id="rs">リセット</button></div>
+  </div>
+  <div class="card">
+    <div class="sub">設定期待値(ボーナス・小役から推定)</div>
+    <div id="setrows"></div>
+    <div class="sub" id="setnote" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<div id="p2" style="display:none">
+  <div class="card">
+    <div class="nav"><button id="pv">‹</button><span id="ym"></span><button id="nx">›</button></div>
+    <div class="big" id="mt" style="font-size:36px;margin-top:8px"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <div class="card">
+    <div class="sub" style="text-align:left;margin-bottom:4px">日ごとの一覧</div>
+    <div id="dlist"></div>
+  </div>
+</div>
+
+<div class="mb" id="mb"><span>機種</span><select id="mach"></select></div>
+
+<div class="ov" id="ov"><div class="sheet">
+  <div style="font-weight:700;font-size:17px" id="dt"></div>
+  <label>投資(円)</label><input id="inv" type="number" inputmode="numeric">
+  <label>回収(円)</label><input id="ret" type="number" inputmode="numeric">
+  <label>メモ(台・店など)</label><input id="memo" type="text">
+  <div class="snap" id="snap" style="display:none"></div>
+  <label class="snl" id="snl" style="display:none"><input type="checkbox" id="snc"><span id="snt"></span></label>
+  <div class="row"><button id="del">削除</button><button id="cx">閉じる</button><button id="sv" class="pri">保存</button></div>
+</div></div>
+
+<script>
+var S={g:0,b:0,days:{}};
+try{var raw=localStorage.getItem("jug-data");if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem("jug-data",JSON.stringify(S))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+function yen(n){return (n>0?"+":"")+n.toLocaleString()+"円"}
+function cls(n){return n>0?"pl":n<0?"mi":""}
+
+var MACH=[
+["マイジャグラー6",[5.90,5.86,5.83,5.83,5.83,5.79],[273.1,270.8,266.4,254.0,240.1,229.1],[409.6,385.8,336.1,290.0,268.6,229.1],[1365.3,1365.3,1365.3,1365.3,1337.5,1129.9],[1092.3,1092.3,1040.3,1024.0,862.3,762.1],"マイジャグラー6は公表値がマイジャグラー5と同じなので、重複確率もマイジャグラー5の値を使っています。"],
+["マイジャグラー5",[5.90,5.86,5.83,5.83,5.83,5.79],[273.1,270.8,266.4,254.0,240.1,229.1],[409.6,385.8,336.1,290.0,268.6,229.1],[1365.3,1365.3,1365.3,1365.3,1337.5,1129.9],[1092.3,1092.3,1040.3,1024.0,862.3,762.1],""],
+["ファンキージャグラー2",[5.94,5.92,5.88,5.83,5.76,5.67],[266.4,259.0,256.0,249.2,240.1,219.9],[439.8,407.1,366.1,322.8,299.3,262.1],[1424.7,1365.3,1365.3,1365.3,1285.0,1260.3],[1456.4,1337.5,1285.0,1149.8,1149.8,1024.0],""],
+["ハッピージャグラーV3",[6.07,6.03,6.00,5.86,5.84,5.80],[273.1,270.8,263.2,254.0,239.2,226.0],[397.2,362.1,332.7,300.6,273.1,256.0],[1489.5,1489.5,1489.5,1213.6,1213.6,1213.6],[1057.0,993.0,885.6,809.1,728.2,642.5],""],
+["ゴーゴージャグラー3",[6.25,6.20,6.15,6.07,6.00,5.92],[259.0,258.0,257.0,254.0,247.3,234.9],[354.2,332.7,306.2,268.6,247.3,234.9],[1337.5,1337.5,1337.5,1337.5,1310.7,1260.3],[1423.7,1285.3,1149.4,1040.2,978.0,910.3],""],
+["ミスタージャグラー",[6.13,6.07,6.01,5.95,5.88,5.82],[268.6,267.5,260.1,249.2,240.9,237.4],[374.5,354.2,331.0,291.3,257.0,237.4],[1688.5,1681.6,1655.1,1508.3,1410.0,1385.4],[1620.7,1599.8,1503.3,1411.8,1357.1,1331.1],""],
+["ジャグラーガールズSS",[5.98,5.98,5.98,5.89,5.88,5.83],[273.1,270.8,260.1,250.1,243.6,226.0],[381.0,350.5,316.6,281.3,270.8,252.1],[923.0,936.2,873.8,873.8,873.8,819.2],[1424.7,1285.0,1149.8,963.8,923.0,851.1],""],
+["ウルトラミラクルジャグラー",[5.93,5.93,5.93,5.93,5.87,5.81],[267.5,261.1,256.0,242.7,233.2,216.3],[425.6,402.1,350.5,322.8,297.9,277.7],[1349.2,1205.1,1156.7,1109.4,997.7,930.8],[1489.6,1528.0,1233.7,1239.6,1050.0,1032.2],""],
+["ネオアイムジャグラーEX",[6.02,6.02,6.02,6.02,6.02,5.80],[273.1,269.7,269.7,259.0,259.0,255.0],[439.8,399.6,331.0,315.1,255.0,255.0],[1129.9,1129.9,1129.9,1092.3,1092.3,1092.3],[1456.4,1310.7,1092.3,1057.0,851.1,851.1],""],
+["SアイムジャグラーEX",[6.02,6.02,6.02,6.02,6.02,5.80],[273.1,269.7,269.7,259.0,259.0,255.0],[439.8,399.6,331.0,315.1,255.0,255.0],[1129.9,1129.9,1129.9,1092.3,1092.3,1092.3],[1456.4,1310.7,1092.3,1057.0,851.1,851.1],"SアイムジャグラーEXは公表値がネオアイムEXと同じなので、重複確率もネオアイムEXの値を使っています。"]];
+if(typeof S.mi!=="number"||S.mi<0||S.mi>=MACH.length)S.mi=0;
+$("mach").innerHTML=MACH.map(function(m,i){return '<option value="'+i+'">'+m[0]+"</option>"}).join("");
+$("mach").value=S.mi;
+$("mach").onchange=function(){S.mi=Number(this.value);save();drawC()};
+function post(mi,G,b,n){
+  var m=MACH[mi],N=n[0]+n[1]+n[2]+n[3],i,k;
+  if(!(G>0&&N<=G&&b<=G))return null;
+  var ll=[];
+  for(i=0;i<6;i++){
+    var tB=1/m[2][i],tR=1/m[3][i],cB=1/m[4][i],cR=1/m[5][i],pg=1/m[1][i];
+    var p=[tB-cB,cB,tR-cR,cR],ps=p[0]+p[1]+p[2]+p[3];
+    var l=(G-N)*Math.log(1-ps);
+    for(k=0;k<4;k++)l+=n[k]*Math.log(p[k]);
+    l+=1*(b*Math.log(pg)+(G-b)*Math.log(1-pg));
+    ll.push(l);
+  }
+  var mx=Math.max.apply(null,ll);
+  var e=ll.map(function(x){return Math.exp(x-mx)});
+  var t=e.reduce(function(a,b){return a+b},0);
+  return e.map(function(v){return v/t});
+}
+function drawS(){
+  var m=MACH[S.mi],G=S.g;
+  var w=post(S.mi,G,S.b,[S.big,S.cbig,S.reg,S.creg]),ok=!!w,i;
+  if(!w)w=[1,1,1,1,1,1].map(function(){return 1/6});
+  var tot=[];
+  for(i=0;i<6;i++)tot.push(1/(1/m[2][i]+1/m[3][i]));
+  var top=Math.max.apply(null,w);
+  $("setrows").innerHTML=w.map(function(v,j){
+    return '<div class="sr"><span class="k">設定'+(j+1)+'</span><span class="bar"><i style="width:'+(ok?v*100:0)+'%;opacity:'+(ok&&v===top?1:.55)+'"></i></span><span class="p">'+(ok?(v*100).toFixed(1)+"%":"-")+'</span><span class="r">1/'+tot[j].toFixed(1)+"</span></div>";
+  }).join("");
+  var hi=w[3]+w[4]+w[5];
+  $("setnote").textContent=(ok?"高設定(4〜6)の可能性 "+(hi*100).toFixed(0)+"%。":"")+"BIG・REG・チェリー重複・ぶどうの確率で計算しています(ぶどうの重みは標準)。右の数字は各設定の合算確率です。"+(m[6]||"")+(G<3000?"ゲーム数が少ないので参考程度に。":"");
+}
+function fitSnap(box){
+  if(box.style.display==="none")return;
+  var fs=14,lines=box.querySelectorAll(".ln"),w=box.clientWidth-20,i,over;
+  do{
+    box.style.fontSize=fs+"px";over=false;
+    for(i=0;i<lines.length;i++){if(lines[i].scrollWidth>w){over=true;break}}
+    fs-=0.5;
+  }while(over&&fs>=9);
+}
+function makeSnap(){
+  var w=post(S.mi,S.g,S.b,[S.big,S.cbig,S.reg,S.creg]);
+  return {name:MACH[S.mi][0],g:S.g,b:S.b,big:S.big,cbig:S.cbig,reg:S.reg,creg:S.creg,w:w?w.map(function(v){return Math.round(v*1000)/10}):null};
+}
+function snapHtml(sn){
+  var r=sn.b>0?(sn.g/sn.b).toFixed(2):"0.00";
+  var h='<div class="ln" style="font-weight:700">'+sn.name+'</div><div class="ln">'+sn.g+'G 🍇'+sn.b+'('+r+') BIG'+sn.big+' REG'+sn.reg+' チェリーBIG'+sn.cbig+' チェリーREG'+sn.creg+'</div>';
+  if(sn.w){
+    var mx=0,i;
+    for(i=1;i<6;i++)if(sn.w[i]>sn.w[mx])mx=i;
+    h+='<div class="ln">設定期待: 最有力 設定'+(mx+1)+' '+sn.w[mx]+'% / 高設定(4〜6) '+Math.round(sn.w[3]+sn.w[4]+sn.w[5])+'%</div>';
+  }else h+='<div class="ln">設定期待: -</div>';
+  return h;
+}
+
+var KS=[["big","BIG"],["reg","REG"],["cbig","チェリーBIG"],["creg","チェリーREG"]];
+KS.forEach(function(k){if(typeof S[k[0]]!=="number")S[k[0]]=0});
+function drawC(){
+  $("g").value=S.g;
+  $("gv").value=S.b;
+  $("gr").textContent="（"+(S.b>0?(S.g/S.b).toFixed(2):"0.00")+"）";
+  var B=S.big+S.cbig,R=S.reg+S.creg;
+  var st=[["BIG",B,1],["REG",R,1],["合算",B+R,1],["チェリーBIG",S.cbig,1],["チェリーREG",S.creg,1]];
+  $("stats").innerHTML=st.map(function(x){return '<div class="st"><div class="l">'+x[0]+" "+x[1]+"回</div><div class=\"v\">"+(x[1]>0?"1/"+(S.g/x[1]).toFixed(x[2]):"-")+"</div></div>"}).join("");
+  $("tiles").innerHTML=KS.map(function(k){return '<div class="tile" data-k="'+k[0]+'" data-d="1">'+k[1]+'<div class="n">'+S[k[0]]+'</div><button class="m" data-k="'+k[0]+'" data-d="-1">−</button></div>'}).join("");
+  drawS();
+}
+$("tiles").onclick=function(e){var t=e.target.closest("[data-d]");if(!t)return;var k=t.dataset.k;S[k]=Math.max(0,S[k]+Number(t.dataset.d));save();drawC()};
+document.querySelectorAll("[data-g]").forEach(function(b){b.onclick=function(){S.g=Math.max(0,S.g+Number(b.dataset.g));save();drawC()}});
+$("bp").onclick=function(){S.b++;save();drawC()};
+$("bp5").onclick=function(){S.b+=5;save();drawC()};
+$("bm").onclick=function(){S.b=Math.max(0,S.b-1);save();drawC()};
+var rsT=null;
+function rsBack(){rsT=null;var b=$("rs");b.textContent="リセット";b.style.background="";b.style.color=""}
+$("rs").onclick=function(){
+  if(rsT){clearTimeout(rsT);rsBack();S.g=0;S.b=0;KS.forEach(function(k){S[k[0]]=0});save();drawC();return}
+  var b=$("rs");b.textContent="もう一度押して確定";b.style.background="var(--mi)";b.style.color="#fff";
+  rsT=setTimeout(rsBack,3000);
+};
+
+function ni(id,key){
+  var el=$(id);
+  el.onfocus=function(){setTimeout(function(){try{el.select()}catch(e){}},0)};
+  el.onchange=function(){var v=parseInt(el.value.replace(/[^0-9]/g,""),10);S[key]=isNaN(v)?0:v;save();drawC()};
+  el.onkeydown=function(e){if(e.key==="Enter")el.blur()};
+}
+ni("g","g");ni("gv","b");
+
+var cur=new Date();cur.setDate(1);var sel="";
+function key(y,m,d){return y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0")}
+function drawK(){
+  var y=cur.getFullYear(),m=cur.getMonth();
+  $("ym").textContent=y+"年"+(m+1)+"月";
+  var first=new Date(y,m,1).getDay(),last=new Date(y,m+1,0).getDate();
+  var h="";"日月火水木金土".split("").forEach(function(w){h+='<div class="h">'+w+"</div>"});
+  for(var i=0;i<first;i++)h+="<div></div>";
+  var now=new Date(),tot=0,win=0,lose=0,td=key(now.getFullYear(),now.getMonth(),now.getDate());
+  for(var d=1;d<=last;d++){
+    var k=key(y,m,d),r=S.days[k],v="";
+    if(r){var n=(r.ret||0)-(r.inv||0);tot+=n;if(n>0)win++;else if(n<0)lose++;v='<span class="'+cls(n)+'">'+(n>0?"+":"")+n.toLocaleString()+"</span>"}
+    h+='<div class="d'+((first+d-1)%7===6?" sat":(first+d-1)%7===0?" sun":"")+(k===td?" today":"")+'" data-k="'+k+'"><b>'+d+"</b>"+v+"</div>";
+  }
+  $("grid").innerHTML=h;
+  $("mt").textContent=yen(tot);$("mt").className="big "+cls(tot);
+  document.querySelectorAll(".d[data-k]").forEach(function(e){e.onclick=function(){openD(e.dataset.k)}});
+  drawL(y,m);
+}
+function setTxt(sn){
+  if(!sn||!sn.w)return "設定期待 -";
+  var mx=0,i;
+  for(i=1;i<6;i++)if(sn.w[i]>sn.w[mx])mx=i;
+  return "最有力 設定"+(mx+1)+" "+sn.w[mx]+"% / 高設定 "+Math.round(sn.w[3]+sn.w[4]+sn.w[5])+"%";
+}
+function drawL(y,m){
+  var pre=y+"-"+String(m+1).padStart(2,"0")+"-",keys=Object.keys(S.days).filter(function(k){return k.indexOf(pre)===0}).sort();
+  var wk="日月火水木金土";
+  if(!keys.length){$("dlist").innerHTML='<div class="sub" style="padding:8px 0;text-align:left">この月の記録はありません</div>';return}
+  $("dlist").innerHTML=keys.map(function(k){
+    var r=S.days[k],d=Number(k.slice(8)),n=(r.ret||0)-(r.inv||0),sn=r.sn;
+    var nm=sn?sn.name:"機種の記録なし",sub=sn?setTxt(sn):(r.memo||"");
+    return '<div class="dr" data-k="'+k+'"><div class="dd">'+d+'<small>('+wk[new Date(y,m,d).getDay()]+')</small></div><div class="dm"><div class="dn">'+nm+'</div><div class="ds">'+sub.replace(/</g,"&lt;")+'</div></div><div class="dv '+cls(n)+'">'+(n>0?"+":"")+n.toLocaleString()+'</div></div>';
+  }).join("");
+  $("dlist").querySelectorAll(".dr").forEach(function(e){e.onclick=function(){openD(e.dataset.k)}});
+}
+
+function openD(k){
+  sel=k;var r=S.days[k]||{};
+  $("dt").textContent=k.replace(/-/g,"/");
+  $("inv").value=r.inv||"";$("ret").value=r.ret||"";$("memo").value=r.memo||"";
+  var has=S.g>0,sn=r.sn,box=$("snap"),lab=$("snl");
+  if(sn){
+    box.innerHTML='<div style="color:var(--sub)">この日の実戦データ</div>'+snapHtml(sn);box.style.display="";
+    lab.style.display=has?"flex":"none";$("snc").checked=false;$("snt").textContent="今のカウンターで上書きする";
+  }else if(has){
+    box.innerHTML='<div style="color:var(--sub)">今のカウンター</div>'+snapHtml(makeSnap());box.style.display="";
+    lab.style.display="flex";$("snc").checked=true;$("snt").textContent="この内容をこの日の記録に保存する";
+  }else{box.style.display="none";lab.style.display="none";$("snc").checked=false}
+  $("ov").classList.add("on");
+  fitSnap(box);
+}
+$("cx").onclick=function(){$("ov").classList.remove("on")};
+$("sv").onclick=function(){
+  var i=Number($("inv").value)||0,r=Number($("ret").value)||0;
+  var sn=(S.days[sel]||{}).sn;
+  if($("snc").checked&&S.g>0)sn=makeSnap();
+  var o={inv:i,ret:r,memo:$("memo").value};if(sn)o.sn=sn;
+  if(i||r||o.memo||sn)S.days[sel]=o;else delete S.days[sel];
+  save();$("ov").classList.remove("on");drawK();
+};
+$("del").onclick=function(){delete S.days[sel];save();$("ov").classList.remove("on");drawK()};
+$("pv").onclick=function(){cur.setMonth(cur.getMonth()-1);drawK()};
+$("nx").onclick=function(){cur.setMonth(cur.getMonth()+1);drawK()};
+
+function tab(n){
+  $("p1").style.display=n==1?"":"none";$("p2").style.display=n==2?"":"none";
+  $("t1").className=n==1?"on":"";$("t2").className=n==2?"on":"";
+  $("mb").style.display=n==1?"":"none";if(n==2)drawK();
+}
+$("t1").onclick=function(){tab(1)};$("t2").onclick=function(){tab(2)};
+drawC();
+</script></body></html>
