@@ -160,7 +160,7 @@ function post(mi,G,b,n){
     var p=[tB-cB,cB,tR-cR,cR],ps=p[0]+p[1]+p[2]+p[3];
     var l=(G-N)*Math.log(1-ps);
     for(k=0;k<4;k++)l+=n[k]*Math.log(p[k]);
-    l+=1*(b*Math.log(pg)+(G-b)*Math.log(1-pg));
+    l+=0.5*(b*Math.log(pg)+(G-b)*Math.log(1-pg));
     ll.push(l);
   }
   var mx=Math.max.apply(null,ll);
@@ -178,8 +178,7 @@ function drawS(){
   $("setrows").innerHTML=w.map(function(v,j){
     return '<div class="sr"><span class="k">設定'+(j+1)+'</span><span class="bar"><i style="width:'+(ok?v*100:0)+'%;opacity:'+(ok&&v===top?1:.55)+'"></i></span><span class="p">'+(ok?(v*100).toFixed(1)+"%":"-")+'</span><span class="r">1/'+tot[j].toFixed(1)+"</span></div>";
   }).join("");
-  var hi=w[3]+w[4]+w[5];
-  $("setnote").textContent=(ok?"高設定(4〜6)の可能性 "+(hi*100).toFixed(0)+"%。":"")+"BIG・REG・チェリー重複・ぶどうの確率で計算しています(ぶどうの重みは標準)。右の数字は各設定の合算確率です。"+(m[6]||"")+(G<3000?"ゲーム数が少ないので参考程度に。":"");
+  $("setnote").textContent="BIG・REG・チェリー重複・ぶどうの確率で計算しています(ぶどうの重みは弱め)。右の数字は各設定の合算確率です。"+(m[6]||"")+(G<3000?"ゲーム数が少ないので参考程度に。":"");
 }
 function fitSnap(box){
   if(box.style.display==="none")return;
@@ -200,7 +199,7 @@ function snapHtml(sn){
   if(sn.w){
     var mx=0,i;
     for(i=1;i<6;i++)if(sn.w[i]>sn.w[mx])mx=i;
-    h+='<div class="ln">設定期待: 最有力 設定'+(mx+1)+' '+sn.w[mx]+'% / 高設定(4〜6) '+Math.round(sn.w[3]+sn.w[4]+sn.w[5])+'%</div>';
+    h+='<div class="ln">設定期待: 最有力 設定'+(mx+1)+' '+sn.w[mx]+'%</div>';
   }else h+='<div class="ln">設定期待: -</div>';
   return h;
 }
@@ -281,7 +280,7 @@ function setTxt(sn){
   if(!sn||!sn.w)return "設定期待 -";
   var mx=0,i;
   for(i=1;i<6;i++)if(sn.w[i]>sn.w[mx])mx=i;
-  return "最有力 設定"+(mx+1)+" "+sn.w[mx]+"% / 高設定 "+Math.round(sn.w[3]+sn.w[4]+sn.w[5])+"%";
+  return "最有力 設定"+(mx+1)+" "+sn.w[mx]+"%";
 }
 function drawL(y,m){
   var pre=y+"-"+String(m+1).padStart(2,"0")+"-",keys=Object.keys(S.days).filter(function(k){return k.indexOf(pre)===0}).sort();
