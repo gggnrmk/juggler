@@ -250,8 +250,8 @@ var fl=$("flash"),flT=null;
   $(id).addEventListener("click",function(){haptic();fl.style.display="block";clearTimeout(flT);flT=setTimeout(function(){fl.style.display="none"},30)});
 });
 
-var SLEEP_MS=20000,slEl=$("sleep"),slT=null;
-function slReset(){clearTimeout(slT);slT=setTimeout(function(){slEl.style.display="block"},SLEEP_MS)}
+var SLEEP_MS=10000,slEl=$("sleep"),slT=null,curTab=1;
+function slReset(){clearTimeout(slT);if(curTab!==1)return;slT=setTimeout(function(){slEl.style.display="block"},SLEEP_MS)}
 ["pointerdown","touchstart","keydown","input"].forEach(function(ev){
   document.addEventListener(ev,function(){if(slEl.style.display!=="block")slReset()},true);
 });
@@ -391,7 +391,7 @@ $("impf").onchange=function(){
 function tab(n){
   $("p1").style.display=n==1?"":"none";$("p2").style.display=n==2?"":"none";
   $("t1").className=n==1?"on":"";$("t2").className=n==2?"on":"";
-  $("mb").style.display=n==1?"":"none";if(n==2)drawK();
+  $("mb").style.display=n==1?"":"none";curTab=n;if(n==1)slReset();else{clearTimeout(slT);slEl.style.display="none"}if(n==2)drawK();
 }
 $("t1").onclick=function(){tab(1)};$("t2").onclick=function(){tab(2)};
 drawC();
